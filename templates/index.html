@@ -11,17 +11,35 @@
 </head>
 <body>
 	<h1>Bus tracker</h1>
-	<p>Paragraph</p>
+{#	<p href="https://leafletjs.com">Paragraph</p>#}
     <div id="7" style="width:900px; height:580px"></div>
-
     <script>
         var mymap = L.map('7').setView([51.505, -0.09], 13);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    accessToken: 'your.mapbox.access.token'
-}).addTo(mymap);
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            accessToken: 'pk.eyJ1IjoibWFtaWt1bmViaSIsImEiOiJjazRrZ3B5c2kxenBmM25vMnphamN2N2szIn0.4sN8sjskEtjQuX5H3OLaKw'
+        }).addTo(mymap);
+
+        mapMarkers1 = [];
+        mapMarkers2 = [];
+
+        var source = newEventSource('/topic/busData');
+        source.addEventListener('message', function(e){
+            console.log('Message');
+            obj = JSON.parse(e.data);
+            console.log(obj);
+
+            if(ibj.busline === '17'){
+                for(var i=0; i < mapMarkers1.length; i++){
+                    mymap.removeLayer(mapMarkers1[i]);
+                }
+                marker1 = L.marker([obj.latitude, obj.longitude]).addTo(mymap)
+                mapMarkers1.push(marker1);
+            }
+        }, false);
+
     </script>
 </body>
 </html>
