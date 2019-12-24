@@ -1,0 +1,15 @@
+start consumer:
+kafka-console-consumer.sh --bootstrap-server 0.0.0.0:9092 --topic busData
+
+start zookeeper:
+zookeeper-server-start.sh config/zookeeper.properties
+
+list topics
+kafka-topics.sh --bootstrap-server 0.0.0.0:9092 --list
+
+to get offset and partition:
+kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic busData
+
+start console consumer
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic busData --offset <offset> --partition <partition>
+
